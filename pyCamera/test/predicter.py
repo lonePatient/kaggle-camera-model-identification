@@ -3,20 +3,22 @@ import numpy as np
 import torch
 from tqdm import tqdm
 import torch.nn.functional as F
-from ..train.train_utils import restore_checkpoint,model_device
+from ..utils.train_utils import restore_checkpoint,model_device
 
 # 单个模型进行预测
 class Predicter(object):
-    def __init__(self,model,
+    def __init__(self,
+                 model,
                  test_data,
                  logger,
                  checkpoint_path,
                  n_gpu = 0):
-        self.model = model
-        self.test_data = test_data
-        self.logger = logger
+
+        self.model           = model
+        self.test_data       = test_data
+        self.logger          = logger
         self.checkpoint_path = checkpoint_path
-        self.n_gpu = n_gpu
+        self.n_gpu           = n_gpu
         self._reset()
 
     # 重载模型

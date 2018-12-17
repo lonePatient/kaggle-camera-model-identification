@@ -2,7 +2,7 @@
 import os
 import importlib
 import warnings
-from ..utils.util import ensure_dir
+from ..utils.utils import ensure_dir
 class WriterTensorboardX():
     def __init__(self, writer_dir, logger, enable):
         self.writer = None

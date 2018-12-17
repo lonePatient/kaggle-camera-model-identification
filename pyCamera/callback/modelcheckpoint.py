@@ -2,7 +2,7 @@
 import os
 import numpy as np
 import torch
-from ..utils.util import ensure_dir
+from ..utils.utils import ensure_dir
 
 class ModelCheckpoint(object):
 

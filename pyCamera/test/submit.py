@@ -6,12 +6,13 @@ from glob import glob
 from collections import Counter
 import copy
 from .predicter import Predicter
-from .predict_utils import geometric_mean
-from ..utils.util import json_read
+from ..utils.predict_utils import geometric_mean
+from ..utils.utils import json_read
 from ..model.cnn.makemodel import MakeModel
 
 class TestSubmit(object):
-    def __init__(self,archs,
+    def __init__(self,
+                 archs,
                  test_data,
                  logger,
                  files,
@@ -24,22 +25,23 @@ class TestSubmit(object):
                  n_gpu=0
                  ):
 
-        self.archs = archs  # 模型列表
-        self.num_models = num_models # top n checkpoints
-        self.test_loader = test_data #数据集
-        self.num_classes = num_classes #类别个数
-        self.logger = logger           # 日志
-        self.tta_count = tta_count     # tta总数
-        self.files = files
-        self.outfile = outfile
+        self.archs          = archs  # 模型列表
+        self.num_models     = num_models # top n checkpoints
+        self.test_loader    = test_data #数据集
+        self.num_classes    = num_classes #类别个数
+        self.logger         = logger           # 日志
+        self.tta_count      = tta_count     # tta总数
+        self.files          = files
+        self.outfile        = outfile
         self.checkpoint_dir = checkpoint_dir
-        self.n_gpu = n_gpu
+        self.n_gpu          = n_gpu
+
+
         self.id_labels = {value:key for key,value in json_read(label_path).items()}
 
     def _get_weights(self):
         weights = []
         for i,arch in enumerate(self.archs):
-            arch += "_pseudo"
             for filename in glob(path.sep.join([self.checkpoint_dir.format(arch = arch),"*.pth"])):
                 weights.append((arch,filename))
         return weights

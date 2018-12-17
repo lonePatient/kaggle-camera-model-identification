@@ -1,6 +1,6 @@
- # camera-model-identification-PyTorch
+# camera-model-identification-PyTorch
 
- ## Description
+## Description
 
 Implementation of camera model identification models  in kaggle .
 
@@ -45,8 +45,8 @@ packages:
 1. Install packages with `pip install -r requirements.txt`
 2. Download dataset  from [kaggle](https://www.kaggle.com/c/sp-society-camera-model-identification/data)
 3. Place train dataset from Kaggle competition to dataset/train. Place test dataset from Kaggle competition to dataset/test. 
-4. run`python data_split.py`
-5. run `sh run.sh`
-
-
-
+4. run `python data_split.py`
+5. run `python runTrain.py --batch_size=64 --pretrained=True --learning_rate=0.0001 --epochs=100`
+6. run `python runMakePseudo.py --batch_size=128`
+7. run `python runTrain.py --batch_size=64 --learning_rate=0.0001 --epochs=40 --resume=True --use_pseudo=True`
+8. run `python runTest.py --batch_size=128`

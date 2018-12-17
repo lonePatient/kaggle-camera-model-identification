@@ -1,10 +1,7 @@
 #encoding:utf-8
 import os
-from os import path
 import torch
 import json
-
-from glob import glob
 
 class AverageMeter(object):
     '''
@@ -28,7 +25,7 @@ def prepare_device(n_gpu_use,logger):
     setup GPU device if available, move model into configured device
     # 如果n_gpu_use为数字，则使用range生成list
     # 如果输入的是一个list，则默认使用list[0]作为controller
-     """
+    """
     if isinstance(n_gpu_use,int):
         n_gpu_use = range(n_gpu_use)
     n_gpu = torch.cuda.device_count()

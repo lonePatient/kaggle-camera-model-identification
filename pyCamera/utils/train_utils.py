@@ -1,7 +1,7 @@
 #encoding:utf-8
 import os
 import torch
-from ..utils.util import prepare_device
+from .utils import prepare_device
 
 def restore_checkpoint(resume_path,model = None,optimizer = None):
     checkpoint = torch.load(resume_path)

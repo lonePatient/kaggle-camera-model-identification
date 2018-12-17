@@ -4,9 +4,9 @@ import numpy as np
 #import jpeg4py as jpeg
 from PIL import Image
 from torch.utils.data import Dataset
-from ..utils.util import json_read
+from ..utils.utils import json_read
 
-class CameraDataset(Dataset):
+class CreateDataset(Dataset):
     '''
         root/class_x/xxx.ext
         root/class_x/xxy.ext

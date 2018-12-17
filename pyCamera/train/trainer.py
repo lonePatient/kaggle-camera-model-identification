@@ -4,8 +4,8 @@ import time
 import numpy as np
 import torch
 from ..callback.progressbar import ProgressBar
-from ..utils.util import AverageMeter
-from .train_utils import restore_checkpoint,model_device
+from ..utils.utils import AverageMeter
+from ..utils.train_utils import restore_checkpoint,model_device
 
 # 训练包装器
 class Trainer(object):
@@ -72,7 +72,7 @@ class Trainer(object):
         #     print(p.size())
         params = sum([np.prod(p.size()) for p in model_parameters])
         # 总的模型参数量
-        self.logger.info('Trainable parameters: {}'.format(params))
+        self.logger.info('Model {}: trainable parameters: {:4}M'.format(self.model.__get_name(),params / 1000 / 1000))
         # 模型结构
         self.logger.info(self.model)
 
@@ -83,7 +83,7 @@ class Trainer(object):
             'epoch': epoch,
             'state_dict': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
-            'val_loss':round(val_loss,4)
+            'val_loss': round(val_loss,4)
         }
         return state
 
@@ -125,8 +125,10 @@ class Trainer(object):
             train_loss.update(loss.item(),data.size(0))
             train_acc.update(acc.item(),data.size(0))
             if self.verbose >= 1:
-                self.progressbar.step(batch_idx=batch_idx,loss  = loss.item(),
-                                    acc = acc.item(),use_time = time.time() - start)
+                self.progressbar.step(batch_idx=batch_idx,
+                                      loss     = loss.item(),
+                                      acc      = acc.item(),
+                                      use_time = time.time() - start)
         print("\ntraining result:")
         train_log = {
             'loss': train_loss.avg,
@@ -135,9 +137,9 @@ class Trainer(object):
         return train_log
 
     def train(self):
-        for epoch in range(self.start_epoch,self.start_epoch+self.epochs + 1):
+        for epoch in range(self.start_epoch,self.start_epoch+self.epochs):
             print("----------------- training start -----------------------")
-            print("Epoch {i}/{epochs}......".format(i=epoch, epochs=self.epochs))
+            print("Epoch {i}/{epochs}......".format(i=epoch, epochs=self.start_epoch+self.epochs -1))
             train_log = self._train_epoch()
             val_log = self._valid_epoch()
             logs = dict(train_log,**val_log)

@@ -1,19 +1,20 @@
 #encoding:utf-8
 import os
+import shutil
 from tqdm import tqdm
 from os import path
 import numpy as np
 import pandas as pd
 from glob import glob
-import shutil
 from collections import defaultdict
 from .predicter import Predicter
-from .predict_utils import geometric_mean
-from ..utils.util import json_read
+from ..utils.predict_utils import geometric_mean
+from ..utils.utils import json_read
 from ..model.cnn.makemodel import MakeModel
 
 class PseudoLabel(object):
-    def __init__(self,archs,
+    def __init__(self,
+                 archs,
                  test_data,
                  logger,
                  files,
@@ -21,23 +22,25 @@ class PseudoLabel(object):
                  label_path,
                  pseudo_dir,
                  checkpoint_dir,
-                 num_models=1,
+                 num_models  = 1,
                  num_classes = 10,
-                 tta_count = 12,
-                 n_gpu=0
+                 tta_count   = 12,
+                 n_gpu       = 0
                  ):
 
-        self.archs = archs  # 模型列表
-        self.num_models = num_models # top n checkpoints
-        self.test_loader = test_data #数据集
-        self.num_classes = num_classes #类别个数
-        self.logger = logger           # 日志
-        self.tta_count = tta_count     # tta总数
-        self.files = files
-        self.outfile = outfile
+        self.archs          = archs             # 模型列表
+        self.num_models     = num_models   # top n checkpoints
+        self.test_loader    = test_data   # 数据集
+        self.num_classes    = num_classes # 类别个数
+        self.logger         = logger           # 日志
+        self.tta_count      = tta_count     # tta总数
+        self.files          = files
+        self.outfile        = outfile
         self.checkpoint_dir = checkpoint_dir
-        self.pseudo_dir = pseudo_dir
-        self.n_gpu = n_gpu
+        self.pseudo_dir     = pseudo_dir
+        self.n_gpu          = n_gpu
+
+
         self.id_labels = {value:key for key,value in json_read(label_path).items()}
 
     # 获取单个模型的weight列表
@@ -86,7 +89,7 @@ class PseudoLabel(object):
         predictions = geometric_mean(results,test_size = (len(self.files),len(self.id_labels)))
         return predictions
 
-    # 将pesudo信息写入文件中
+    # 将pseudo信息写入文件中
     def _move_pseudo_to_separate_folder(self,pseudo_proba_df):
         cats = pseudo_proba_df['classes']
         fnames =  pseudo_proba_df['fname']
@@ -100,7 +103,8 @@ class PseudoLabel(object):
         pseudo_paths = pd.DataFrame({'fname': image_paths})
         return pseudo_paths
 
-    def generate_pseudo(self):
+    # 产生pseudo label
+    def save_pseudo(self):
         predicts = []
         weights = self._weights()
         for arch in self.archs:

@@ -52,12 +52,7 @@ NUM_WORKERS = multiprocessing.cpu_count()
 # 图像大小
 IAMGE_SIZE = (224,224)
 
-# epochs个数
-EPOCHS = 100
-START_EPOCH = 1
-
 # 学习率
-INITIAL_LR = 0.0001
 LR_PATIENCE = 3
 
 # 动量
@@ -68,7 +63,7 @@ WEIGHT_DECAY = 1e-4
 
 # 标准化(imagenet)
 MEAN = [0.485,0.456,0.406]
-STD = [0.229,0.224,0.225]
+STD  = [0.229,0.224,0.225]
 
 # TOP accuracy
 TOPK = 1
@@ -91,7 +86,7 @@ SAVE_BEST_ONLY = True
 BEST_NAME = '{arch}-best.pth'
 EPOCH_NAME = '{arch}-{epoch}-{val_loss}.pth'
 # 保存模型频率，当save_best_only为False时候，指定才有作用
-SAVE_CHECKPOINTS_FREP = 30
+SAVE_CHECKPOINTS_FREP = 10
 
 # tta增强个数
 TTA_COUNTS = 12

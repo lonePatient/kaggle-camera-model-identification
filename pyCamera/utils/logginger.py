@@ -2,7 +2,7 @@
 import os
 import logging
 from logging import Logger
-from .util import ensure_dir
+from .utils import ensure_dir
 from logging.handlers import TimedRotatingFileHandler
 
 '''
